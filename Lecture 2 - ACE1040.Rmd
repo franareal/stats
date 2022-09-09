@@ -1,0 +1,128 @@
+---
+title: "Lecture 2 - ACE1040"
+author: "Francisco Areal"
+institute: "SNES, Newcastle University"
+date: "2021/12/03 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    font-size: 30px
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#1c5253",
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Montserrat", "300", "300i"),
+  code_font_google   = google_font("Fira Mono")
+)
+```
+
+# The module: its structure
+
+#### 1. Intro to stats - Qualtrics questionnaire 
+#### 2. Getting started with JASP and R
+#### 3. Descriptive statistics I
+#### 4. Descriptive statistics II
+#### 5. Learning probability I
+#### 6. Learning probability II
+#### 7. Parametric and non-parametric Statistical Tests in R I 
+#### 8. Parametric and non-parametric Statistical Tests in R II
+#### 9. Simple linear regression analysis in R I
+#### 10. Simple linear regression analysis in R II
+
+---
+
+# What will we cover today?
+
+What are descriptive statistics?
+
+Descriptive statistics using JASP
+
+Descriptive statistics using R
+
+---
+
+# Descriptive Statistics
+
+Descriptive statistics summarise the information contained in your dataset in a way that can be easily undestood
+
+Let's open the **sleep** file you can find under the Descriptives in the JASP's data library
+
+
+.center[![Jasp website](C:/Users/frana/OneDrive - Newcastle University/MODULES/ACE1040/figures/jasp_open file.png)]
+
+
+---
+
+# Descriptive Statistics
+
+The **mean** is the average of the values in the variable
+
+$$\overline{X}=\frac{1}{N}\sum_{i=1}^NX_i=\frac{X_1+X_2+...+X_{N-1}+X_N}{N}$$
+In JASP click on the ‘Descriptives’ button and then click ‘Descriptive Statistics’
+
+highlight the *extra* variable and click the ‘right arrow’ to move it across into the ‘Variables box'
+
+---
+
+.center[![Jasp website](C:/Users/frana/OneDrive - Newcastle University/MODULES/ACE1040/figures/jasp_sleep1.png)]
+
+.center[![Jasp website](C:/Users/frana/OneDrive - Newcastle University/MODULES/ACE1040/figures/table descxriptives.png)]
+
+---
+
+# JASP
+
+![video](C:/Users/frana/Videos/Video To Gif Maker/GifMaker_20220909150936273.gif)
+
+
+
+---
+
+![](https://media.giphy.com/media/xUOxf7XfmpxuSode1O/giphy.gif)
+
+---
+
+# Descriptive Statistics
+
+Here are the marks for 12 students enrolled in a statistics module 
+
+```{r,comment=NA}
+marks=read.csv("C:/Users/frana/OneDrive - Newcastle University/MODULES/ACE1040/Data/Marks.csv")
+marks[1:12,1]
+```
+
+The mean of the marks is
+```{r,comment=NA}
+mean(marks[1:12,1])
+```
+
+The **median** is the middle value of a set of observations
+
+The median is
+```{r,comment=NA}
+median(marks[1:12,1])
+```
+
+
+The **Mode** is very simple. It is the value that occurs most frequently. The mode for the data above is
+
+```{r,comment=NA}
+names(sort(-table(marks[1:12,1])))[1]
+```
+
+---
+
+# Ploting: the plot function
+
+[Visit this page](https://www.learnbyexample.org/r-plot-function/)
+
+
