@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ACE 3078 - Data and Marketing Analytics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Francisco Areal" />
+    <script src="libs/header-attrs-2.16/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# ACE 3078 - Data and Marketing Analytics
+]
+.subtitle[
+## Lecture 1 - Linear regression
+]
+.author[
+### Francisco Areal
+]
+.institute[
+### SNES, Newcastle University
+]
+.date[
+### 2021/10/01 (updated: 2022-09-26)
+]
+
+---
+
+
+
+
+
+# The module: intro
+
+
+Data and Marketing analytics is used by firms to quickly make decisions based on evidence
+
+Data and Marketing analytics can connect data in novel ways and thus earn incremental revenue 
+
+The techniques covered in this module are used everyday by firms for marketing decision-making, enhance business performance, and improve customers with a better experience
+  
+Palmatier et al. (2022) point out that "these analytics techniques need to be accessible to everyone and
+performed in real-time by the person making the decision"
+  + "Firms that employ marketing analytics increase their sales revenue, profits, and market share, while simultaneously decreasing costs"
+
+Firms need to better understand companies and socio-demographics is not enough! 
+  + Two people with the same age, gender and income may have different preferences
+
+---
+
+# The module: intro
+
+The module provides students with material to develop key skills for data and market analysis such as 
+
+- Understanding a set of key regression models (linear, probit, ordered probit) and other models and techniques (e.g. consumer segmentation) for market analysis (e.g. choice modelling); 
+
+- Building your own regression models (fitting regression models to data); 
+
+- Displaying and interpreting results from quantitative analysis
+
+---
+
+# The module: what it offers 
+The module is designed to offer you the opportunity to to learn how to apply a series of analytical techniques using R (a programming language free software environment for statistical computing and graphics)
+
+- 1) Gain an understanding on what statistical techniques can be used to understand and solve marketing problems
+
+
+- 2) Learn how to use state of the art key statistical techniques in data and marketing analysis
+
+
+All main material for this module (lecture slides, datasets, R files - HTML docs with R codes and examples- and videos) can be found under Modules on Canvas. 
+
+---
+
+# The module: its structure
+### 1. Linear regression
+### 2. Reducing data complexity
+### 3. Segementation: clustering and classification
+### 4. Probit regression model
+### 5. Ordered probit regression
+### 6. Structural Equation Models
+### 7. Choice Modelling
+### 8. Choice Modelling
+
+---
+
+# The module: how you will be assessed
+
+The assessment for this module consists of one single assignment
+
+- A written report will assess your understanding of the statistical techniques covered in the module, both in their use and interpretation of the results
+
+
+- *Release date:     25/11/22*
+
+- *Submission date:  09/12/22*
+
+
+---
+
+padding: 100px;
+background-image: url("https://raw.githubusercontent.com/franareal/stats/main/tools.jpg")
+background-position: 0% 0%
+background-size: 25px 25px;
+
+# The module: its usefulness
+
+What you learn through this module is useful
+
+- for your dissertation or consultancy project
+
+
+- when applying for jobs (to differentiate from other graduates)
+
+
+- in your future career (even if you do not have to conduct stats!)
+
+
+---
+
+
+# Today
+
+- Data and Marketing Analytics
+
+- Population and sample
+
+- What is a linear regression?
+
+ + Linear regression assumptions
+
+- A cereals bar company
+
+  + Data
+
+  + Simple linear regression using R
+  
+  + Results: Coefficient estimates, the p-value, R2 and visualisation
+  
+  + Omitted variables: A better model?
+  
+  + Heteroskedasticity and multicollinearity
+
+
+
+---
+
+# Data and Marketing Analytics
+
+- Data and marketing analytics are a set of tools, techniques used by marketeers to analyse a wide variety of data
+
+- Introducing a new product or setting a price of a product are important decisions for a company. In order to ensure the *right* decision is taken the decision maker needs information (i.e. data and analysis) 
+
+- The first key aspect which is part of the decision making process is to know the what we want to know (i.e. what is the question we want to answer?)
+
+- The second step is what information we need to answer the question? 
+
+- Is the information already available? If not what do we need
+  + select a sample (random, convenient)
+  + design collection of information (focus group, personal interviews, questionnaires)
+
+- What type analytic method is appropriate to answer the question given the information we have?  
+
+
+
+---
+
+# Data and Marketing Analytics
+
+One important thing to bear in mind: 
+
+Costumers are different! They have different needs and wants...they vary in their needs and preferences
+ 
+...but firms cannot offer individual treatment (too costly) so some aggregation needs conducted when conducting marketing analysis 
+
+Along with this it is important to realise that 
+
+ + all customers change, customer needs change over time (life is full of paths!, circumstances change; technological changes may alter needs too)
+ + all competitors react (competitors may copy, innovate; also there may be environmental and cultural shifts)
+ + there are limited resources
+
+---
+
+# Data and Marketing Analytics
+
+.center[![Ford Model T](https://raw.githubusercontent.com/franareal/stats/main/Ford model T.jpg)]
+
+---
+
+# Population and sample
+
+**Population** is any group of individuals who are the subject of any study.
+
+A **sample** is any subset of the population
+
+
+
+.center[![Ford Model T](https://raw.githubusercontent.com/franareal/stats/main/Population and sample.png)]
+
+---
+
+
+# What is a linear regression and what is it used for?
+
+
+- A linear regression is an approach for modelling/exploring the relationship between two variables (simple linear regression) or between a variable and a set of variables (multiple linear regression)
+
+- The variable that is explained is called **dependent variable**, **explained variable** `\(y\)`
+
+- The variables used to explain the dependent variable are called **independent variables**, or **explanatory variables** `\(x\)`
+
+- Simple linear regression are not typically used in applied marketing analysis (too many factors would not be considered)
+
+- Linear regression model results can be used to both *understand relationships* and *predict changes in the dependent variable if there are changes in the any of the independent variables*
+
+---
+
+
+# What is a linear regression and what is it used for?
+
+- Linear regression models are commonly used to understand the drivers of consumers' satisfaction (**satisfaction drivers analysis**) with a product. Explanatory variables used can be product characteristics and its delivery 
+
+- In marketing analysis researchers also conduct what is called **marketing mix modeling**, to understand how product price, promotions and advertisement are related to sales
+
+- Linear regression allows us to study the association of each variable of interest (e.g. price, promotion, advertisement, product characteristic) along with controlling for other factors that could influence product sales or consumer's satisfaction $$y= \alpha + \beta_1 X_1 + \beta_2 X_2 + \epsilon $$ `$$\text{Satisfaction}= \alpha + \beta_1 \text{Price} + \beta_2 \text{Advertisement} + \epsilon$$`
+
+- Regression analysis (linear, probit, ordered) can generate insights on consumer behaviour, understanding business and factors influencing profitability
+
+- Depending on the data we can incorporate temporal and spatial analysis
+
+- We will focus on cross-sectional data, under the assumption of random sampling
+
+---
+
+
+# Multiple linear regression assumptions
+
+
+1. Linear in parameters
+2. Random sampling
+3. Zero conditional mean `\(E(u|x)=0\)`
+ + Explanatory variables are exogenous: The explanatory variables `\(X\)` are not
+ correlated with the error term. 
+ + If they are correlated (i.e. are endogenous) then this assumption can fail
+ if the functional relationship between the explained and explanatory variables 
+ is misspecified e.g. we forget to include an important variable that 
+ is correlated with any explanatory variable; e.g. using a level variable
+ instead of a log of the variable
+4. No perfect collinearity (no exact linear combination)
+ + It does allow explanatory variables to be correlated, but not perfectly
+correlated; 
+ +Perfect collinearity e.g. one variable is constant multiple of another (redundancy)
+ + Assumption of no perfect collinearity also fails if the sample is too small in relation to the number of parameters
+It will fail if `\(n&lt;k+1\)` with `\(k=\text{number of parameters}\)`
+
+---
+
+
+# A cereals bar company
+
+ Let's imagine we work for a company that sells cereals bars, which has been collecting data on advertisement costs (advertisement in the local radios, newspapers and banners, posters in shops) across different shops in the country.
+
+- The company manager would like to know whether spending on advertising the cereals bar has had any effect on sales. In case advertisement had an effect, what has been the impact on sales per £1 spent on advertisement. 
+
+- The company also collected information on whether there shop included a buy 2 get 3 promotion. 
+
+- The company manager would like to know whether this promotion campaign which run only is some of the shops had any impact on sales, and how much if it has. 
+
+---
+
+# A cereals bar company: Data
+
+The data saved in an Excel file. 
+
+- To open an Excel file in R w need to use the package "readxl". If you do not have it you can install it just by typing
+
+
+```r
+install.packages("readxl")
+```
+
+---
+
+# Install package "readxl"
+
+![video](https://raw.githubusercontent.com/franareal/stats/main/R_installing_package.gif)
+
+---
+
+# A cereals bar company: Data
+
+To open the dataset you need to call the package using the R command *library*
+
+
+```r
+library("readxl")
+dataset=as.data.frame(read_excel("Path where your Excel file is stored//cereal_bar_data.xlsx",sheet = "Your sheet name where benefits are"))
+```
+
+
+
+You can create new variables
+
+```r
+sales=dataset$sales
+advert=dataset$advert
+promotion=dataset$promotion
+```
+
+---
+
+# A cereals bar company: Data
+
+
+
+
+
+You can have a quick look at the first rows of the dataset
+
+
+```r
+head(dataset)
+```
+
+```
+*     sales   advert promotion
+1 61.57524 17.48904         0
+2 59.73615 20.65766         0
+*3 71.30114 19.60541         1
+4 78.24548 24.43392         0
+5 57.52640 20.58486         0
+6 71.59466 21.59315         0
+```
+
+$$y= \alpha + \beta_1 X_1 + \beta_2 X_2 + \epsilon $$ `$$\text{Sales}= \alpha + \beta_1 \text{Adertisment costs} + \beta_2 \text{Promotion} + \epsilon$$`
+---
+
+# A simple regression analysis using R
+
+Using the R command *lm* (i.e. linear model) we can run a linear regression of advertisement on sales as show below 
+
+
+
+```r
+lm(sales~advert)
+```
+
+```
+
+Call:
+lm(formula = sales ~ advert)
+
+Coefficients:
+(Intercept)       advert  
+     45.327        1.141  
+```
+
+We could have stored our results under any given name. For instance we could store our the linear regression results under under *Model_1*
+
+
+```r
+Model_1= lm(sales~advert)
+```
+
+---
+
+# Obtaining results
+
+
+To see the results we can use the command *summary* as shown below
+
+
+```r
+summary(Model_1)
+```
+
+```
+
+Call:
+lm(formula = sales ~ advert)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.3440  -3.2654   0.0489   3.3875   9.3551 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 45.32655    1.91813   23.63   &lt;2e-16 ***
+advert       1.14106    0.09289   12.28   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.717 on 98 degrees of freedom
+Multiple R-squared:  0.6062,	Adjusted R-squared:  0.6022 
+F-statistic: 150.9 on 1 and 98 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# The p-value
+
+The p-value is a probability `\([0,1]\)` 
+
+How likely it is that your data would have occurred by random chance.
+
+If you repeat the analysis with other data, how likely is that you would obtain a different result?
+
+A parameter (i.e. coefficient) is said to be statistically significant at 1% confidence level if `\(\text{p-value&lt;0.01}\)`
+
+A parameter (i.e. coefficient) is said to be statistically significant at 5% confidence level if `\(\text{p-value&lt;0.05}\)`
+
+A parameter (i.e. coefficient) is said to be statistically significant at 10% confidence level if `\(\text{p-value&lt;0.10}\)`
+
+These are arbitrary levels and basically mean that if you repeat the analysis with other data there will be a 99%, 95%, 90% chance that you get the same results.
+
+---
+
+# Coefficient estimates
+
+Coefficient estimates or parameter estimates are the output from the model. 
+
+They indicate the direction and strength of the relationship between independent variables `\(X\)` and the dependent variable `\(y\)` of the model 
+
+`$$\beta_1=1.14$$`
+
+An increase of advertisement in £1 million leads to an increase in sales of £1.14 million 
+
+`\(\text{Intercept}=45.33\)` (you can also write `\(\beta_0=45.33\)`) and the p-value is `\(&lt;0.01\)` indicating that this result is statistically significant at 1% confidence level (i.e. different from 0 in this case). This is the predicted average sales with no advertisement costs.
+
+---
+
+# A note on the R2
+
+* The R-squared of the regression (coefficient of determination) is the ratio of the explained variation compared to the total variation. The model explains 61% of the variation in the data ( `\(R^2=0.61\)` )
+
+* Remember the value of `\(R^2\)` is always between 0 and 1
+
+* `\(R^2\)` never decreases, and usually increases when another independent variable is added to the regression
+
+* When adding a explanatory variable to your model check whether the model improves!
+
+* Do not put too much weight on the size of the `\(R^2\)` in evaluating regression equations!!
+
+---
+
+# Results: Visualisation
+
+We can now use the R *plot* command to produce a scatter plot that shows us the relationship between advertisement costs and sales
+
+```r
+plot(advert,sales)
+abline(Model_1)
+```
+
+---
+
+# Results: Visualisation
+
+.center[![Model1_simple](https://raw.githubusercontent.com/franareal/stats/main/R_model_1.png)]
+
+---
+
+# Results: Visualisation
+
+We can obtain the predicted sales given by our model
+
+
+```r
+M1_sales_pred= fitted(Model_1)
+```
+...and plot them
+
+
+```r
+plot(sales,M1_sales_pred, ylim=c(0,100),xlim=c(0,100))
+abline(0, 1, col='blue', lty=2, lwd=3)
+```
+
+---
+
+# Results: Visualisation
+
+.center[![Model1](https://raw.githubusercontent.com/franareal/stats/main/R_m1_sales_pred.png)]
+
+---
+
+# Results: Predicting sales
+
+Our model enables us to predict the effect of a change in advertisement costs on shop sales.
+
+Shop #3	had annual sales of £71.30 million and spend on advertisement £19.61 million	
+
+Our model results indicate that an increase of £1 million in advertisement costs would lead to an increase in sales to £72.44 million (+£1.14 million; $\beta_1=1.14)
+
+But be careful with your predictions, do not extrapolate beyond the range of data
+
+
+```r
+summary(advert)
+```
+
+```
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   8.64   16.96   19.70   20.01   23.28   32.91 
+```
+
+In this example you should not try to predict what happens when advertisement costs are below £8.64 million or higher than £32.91 million 
+
+---
+
+# Omitted variables: A better model?
+
+In the previous model we have not used all the information we had
+
+Remember we had information of whether the shop had in place a promotion take 3 pay for 2
+
+Including this information into our model may help us to explain the total number of sales of cereal bars as well as helping us predict the impact of a change in advertisement costs and/or promotion
+
+---
+
+
+```r
+Model_2=lm(sales~advert+promotion)
+```
+
+
+```r
+summary(Model_2)
+```
+
+```
+
+Call:
+lm(formula = sales ~ advert + promotion)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.0822 -2.1529 -0.5155  2.5804 10.2079 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 42.25373    1.71104  24.695  &lt; 2e-16 ***
+advert       1.17094    0.07939  14.750  &lt; 2e-16 ***
+promotion    4.94952    0.80626   6.139 1.82e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.024 on 97 degrees of freedom
+Multiple R-squared:  0.7164,	Adjusted R-squared:  0.7106 
+F-statistic: 122.5 on 2 and 97 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Omitted variables: A better model?
+
+The predicted average of sales with no advertisemnt and no promotion is £42.25 million
+
+Shop #3	had annual sales of £71.30 million and spend on advertisement £19.61 million	
+
+Our model results indicate that an increase of £1 million in advertisement costs would lead to an increase in sales to £72.47 million (+£1.17 million; $\beta_1=1.17)
+
+Interestingly promotion is an important factor in explaining sales. Having in place the promotion take 3 and pay for 2 cereal bars leads to an average of £5 million extra pounds in annual shop sales
+
+How does this model perform? `\(\text{Adjusted-}R^2=0.71\)` compared to `\(\text{Adjusted-}R^2=0.60\)` of the previous model; RSE=4.02 compared with RSE=4.72 of the previous model
+
+This model performs better than the previous one.
+
+
+---
+
+We can also compare models performance using plots of predicted versus real sales
+
+```r
+M2_sales_pred= fitted(Model_2)
+```
+
+```r
+plot(sales,M2_sales_pred, ylim=c(0,100),xlim=c(0,100))
+abline(0, 1, col='blue', lty=2, lwd=3)
+```
+
+
+.center[![Model2](https://raw.githubusercontent.com/franareal/stats/main/R_m2_sales_pred.png)]
+
+
+---
+
+
+```r
+# DOUBLE GRAPH -I divide the screen in 2 line and 1 column only
+my_screen_step1 &lt;- split.screen(c(1, 2))
+screen(my_screen_step1[1]) # I add one graph on the screen number 1
+plot(sales,M1_sales_pred, ylim=c(40,100),xlim=c(40,100))
+abline(0, 1, col='blue', lty=2, lwd=3)
+screen(my_screen_step1[2]) # I add one graph on the screen number 2
+plot(sales,M2_sales_pred, ylim=c(40,100),xlim=c(40,100))
+abline(0, 1, col='blue', lty=2, lwd=3)
+```
+  - Model 2 (right) has less errors (predicted values are closer to real values)
+.center[![Double graph](https://raw.githubusercontent.com/franareal/stats/main/R_double_graph.png)]
+
+  
+
+---
+
+# The squared root of the average mean square error
+
+It measures the average of the squares of the errors
+
+It provides an indication of the quality of the model predictions
+ + Measures the overall accuracy of the model
+ + Models can be compared
+ + `\(RMSE=\sqrt{ \frac{\sum_{i=1}^{N}(y_i- \hat{y}_i)^2}{n} }\)`
+ + Let's create a function in R to obtain the RMSE
+
+```r
+RMSE=function(y,y_hat){
+  y=as.matrix(y)
+  y_hat=as.matrix(y_hat)
+  n=nrow(y)
+  rmse=round(sqrt(sum((y-y_hat)^2)/n),2)
+return(rmse)
+}
+```
+
+
+---
+
+# The squared root of the average mean square error
+
+
+```r
+RMSE(sales,M1_sales_pred)
+```
+
+```
+[1] 4.67
+```
+
+```r
+RMSE(sales,M2_sales_pred)
+```
+
+```
+[1] 3.96
+```
+In this case the RMSE indicates that Model 2 is preferred!
+
+The Residual Standard Error is a similar measure
+ `\(RSE=\sqrt{ \frac{\sum_{i=1}^{N}(y_i- \hat{y}_i)^2}{n-p-1} }\)`
+ 
+where `\(p\)` is the number of parameters that the model has
+
+It is reported when you use the *summary* function in R
+
+---
+
+# Omitting relevant variables in a regression model 
+
+The parameter estimates `\(\beta_i\)` will be biased
+
+The direction of bias depends on the correlation between the omitted variable and the rest of variables in the model. 
+ 
+ + A positive correlation leads to a positive bias (the parameter estimate is higher than it actually is)
+ - A negative correlation leads to a negative bias (the parameter estimate is lower than it actually is)
+
+
+```r
+cor(advert,promotion)
+```
+
+```
+[1] -0.06131364
+```
+Not a big problem in our case
+
+---
+
+# Including irrelevant variables in a regression model 
+
+It does not bias the results for the coefficient estimates
+
+It can can cause undesirable effects on the variances of the model coefficient estimates `\(\beta_i\)`
+  
+---
+
+# Model functional form?
+
+We have assumed the functional form for our model is $$y= \alpha + \beta_1 X_1 + \beta_2 X_2 + \epsilon $$ `$$\text{Sales}= \alpha + \beta_1 \text{Adertisment costs} + \beta_2 \text{Promotion} + \epsilon$$`
+
+Perhaps there is other type of functional form that fits the data better. What about a log-log?
+
+
+$$log(y)= \alpha + \beta_1 \log(X_1) + \beta_2 \log(X_2) + \epsilon $$ `$$\log(\text{Sales})= \alpha + \beta_1 \log(\text{Adertisment costs}) + \beta_2 \text{Promotion} + \epsilon$$`
+Promotion cannot be logged because it contains zero values
+
+Careful with the interpretation of results of the log-log model
+ + One % increase in Advertisement costs lead to a `\(\hat{\beta}_1\)` % change in Sales
+ + if `\(\hat{\beta}_1=1.17\)` then a 1% increase in Advertisement costs leads to a 1.17% increase in Sales.
+
+
+---
+
+# Model functional form?
+  
+
+```r
+Model_3=lm(log(sales)~log(advert)+promotion)
+```
+
+
+```r
+summary(Model_3)
+```
+
+```
+
+Call:
+lm(formula = log(sales) ~ log(advert) + promotion)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.146946 -0.033614 -0.001069  0.039349  0.139963 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  3.22196    0.06570  49.041  &lt; 2e-16 ***
+log(advert)  0.32310    0.02186  14.778  &lt; 2e-16 ***
+promotion    0.07409    0.01184   6.256 1.07e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.05908 on 97 degrees of freedom
+Multiple R-squared:  0.7171,	Adjusted R-squared:  0.7113 
+F-statistic: 122.9 on 2 and 97 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Model 3
+
+
+```r
+M3_sales_pred=fitted(Model_3)
+
+plot(sales,exp(M3_sales_pred))
+abline(0, 1, col='blue', lty=2, lwd=3)
+```
+.center[![Model 3](https://raw.githubusercontent.com/franareal/stats/main/R_m3_sales_pred.png)]
+
+
+---
+  
+# Heteroskedasticity
+
+Heteroskedasticity is the lack of constant residual variance across the range of predicted values
+
+The errors are greater for some portions of the range than for others
+
+
+```r
+resid_M2=residuals(Model_2)
+predict_M2=predict(Model_2)
+```
+
+
+```r
+plot(predict_M2,abs(resid_M2))
+```
+
+---
+
+# Heteroskedasticity
+
+.center[![Model 3](https://raw.githubusercontent.com/franareal/stats/main/R_corr.png)]
+
+Heteroskedasticity may be present. We need a test to confirm
+
+---
+
+Heteroskedasticity Test for Model 2 (Breusch-Pagan test)
+
+```r
+summary(lm(resid(Model_2)^2~advert+promotion))
+```
+
+```
+
+Call:
+lm(formula = resid(Model_2)^2 ~ advert + promotion)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-25.045 -14.561  -6.824   5.860  82.492 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)   1.9982     9.0566   0.221   0.8258  
+advert        0.8317     0.4202   1.979   0.0506 .
+promotion    -5.8806     4.2676  -1.378   0.1714  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 21.3 on 97 degrees of freedom
+Multiple R-squared:  0.05984,	Adjusted R-squared:  0.04046 
+F-statistic: 3.087 on 2 and 97 DF,  p-value: 0.05014
+```
+The squared error term is associated with advertisement; heteroskedasticity is present!
+
+---
+
+# Heteroskedasticity test
+
+Heteroskedasticity Test for Model 2 (Breusch-Pagan test)
+
+```r
+summary(lm(resid(Model_3)^2~log(advert)+promotion))
+```
+
+```
+
+Call:
+lm(formula = resid(Model_3)^2 ~ log(advert) + promotion)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.004755 -0.002834 -0.001641  0.001198  0.017132 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  0.0016000  0.0053972   0.296   0.7675  
+log(advert)  0.0009459  0.0017961   0.527   0.5997  
+promotion   -0.0020318  0.0009730  -2.088   0.0394 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.004853 on 97 degrees of freedom
+Multiple R-squared:  0.04728,	Adjusted R-squared:  0.02763 
+F-statistic: 2.407 on 2 and 97 DF,  p-value: 0.09548
+```
+
+---
+
+# Heteroskedasticity test
+
+Breusch-Pagan test using R package "lmtest"
+
+
+
+
+```r
+bptest(Model_2)
+```
+
+```
+
+	studentized Breusch-Pagan test
+
+data:  Model_2
+BP = 5.9843, df = 2, p-value = 0.05018
+```
+
+```r
+bptest(Model_3)
+```
+
+```
+
+	studentized Breusch-Pagan test
+
+data:  Model_3
+BP = 4.7275, df = 2, p-value = 0.09407
+```
+
+---
+
+# Heteroskedasticity: Robust regression
+
+
+
+```r
+library(car) # You need to have this package installed
+```
+
+```
+Loading required package: carData
+```
+
+```r
+coeftest(Model_2)
+```
+
+```
+
+t test of coefficients:
+
+             Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept) 42.253733   1.711035 24.6948 &lt; 2.2e-16 ***
+advert       1.170940   0.079388 14.7495 &lt; 2.2e-16 ***
+promotion    4.949518   0.806263  6.1388 1.819e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# Robust regression
+
+
+```r
+summary(Model_2)
+```
+
+```
+
+Call:
+lm(formula = sales ~ advert + promotion)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.0822 -2.1529 -0.5155  2.5804 10.2079 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 42.25373    1.71104  24.695  &lt; 2e-16 ***
+advert       1.17094    0.07939  14.750  &lt; 2e-16 ***
+promotion    4.94952    0.80626   6.139 1.82e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.024 on 97 degrees of freedom
+Multiple R-squared:  0.7164,	Adjusted R-squared:  0.7106 
+F-statistic: 122.5 on 2 and 97 DF,  p-value: &lt; 2.2e-16
+```
+
+not much change in the standard errors; heteroskedasticity present but not serious
+
+---
+
+# Multicollinearity
+  
+High but not perfect collinearity is called multicollinearity
+
+Explanatory variables that are highly correlated produce high variation in our coefficient estimates `\(\beta\)` (i.e. we are less certain about them)
+
+Solution: collect more data
+
+Dropping a variable to reduce multicollinearity can lead to bias in the coefficient estiamates
+
+You can use the package car to calculate the Variance Inflation Factor (VIF) which "tests" for multicollinearity in the model
+
+---
+  
+# Multicollinearity test
+
+
+
+```r
+install.packages("car")
+```
+
+```r
+library(car)
+vif(Model_2)
+```
+
+```
+   advert promotion 
+ 1.003774  1.003774 
+```
+
+We can see that the VIF for both advertisement and promotion are lower than 5, which is fine
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
